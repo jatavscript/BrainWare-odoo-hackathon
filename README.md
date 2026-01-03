@@ -1,212 +1,241 @@
-# Dayflow - Human Resource Management System
+# StockMaster Project
 
-**Every workday, perfectly aligned.**
+## Inventory Management System (IMS)
 
-A comprehensive HRMS built with React + Vite (Frontend) and Node.js + Express.js (Backend) to digitize and streamline core HR operations.
+This project aims to build a modular Inventory Management System (IMS) that digitizes and streamlines all stock operations inside a business, replacing manual registers, Excel sheets, and scattered tracking with a centralized, real-time, easy-to-use application.
 
-## Features
+## Traceability Table
 
-- 🔐 **Secure Authentication** - Sign Up / Sign In with JWT
-- 👥 **Role-based Access** - Admin/HR vs Employee roles
-- 📝 **Employee Profile Management** - View and edit employee profiles
-- ⏰ **Attendance Tracking** - Daily/weekly views with check-in/check-out
-- 🏖️ **Leave Management** - Apply for leave, approve/reject requests
-- 💰 **Payroll Management** - View salary details and generate payroll
-- 📊 **Analytics & Reports** - Dashboard with insights and reports
-- 🎨 **Modern UI/UX** - Beautiful, responsive design with Tailwind CSS
+| Feature/Endpoint/View | PDF Section/Description |
+| :--------------------------- | :------------------------------------------------------------------------------------------- |
+| **Authentication** | Authentication Module |
+| User signup | Authentication Module - User signup |
+| User login | Authentication Module - User login |
+| POST /auth/signup | APIs Required - Auth |
+| POST /auth/login | APIs Required - Auth |
+| **OTP-based Password Reset** | Authentication Module - OTP-based password reset; OTP Feature |
+| POST /auth/request-reset-otp | OTP Feature - Endpoints; APIs Required - Auth |
+| POST /auth/verify-reset-otp | OTP Feature - Endpoints; APIs Required - Auth |
+| POST /auth/reset-password | OTP Feature - Endpoints; APIs Required - Auth |
+| OTP numeric 6-digit | OTP Feature |
+| Hashed OTP in Redis with TTL | OTP Feature |
+| Single-use OTP | OTP Feature |
+| Generic success response | OTP Feature |
+| Short-lived resetToken | OTP Feature |
+| Rate-limit OTP requests | OTP Feature |
+| Redirect to Inventory Dashboard | Authentication Module |
+| **Inventory Dashboard** | Inventory Dashboard |
+| Total Products in Stock | Inventory Dashboard - Display these KPIs |
+| Low Stock / Out of Stock | Inventory Dashboard - Display these KPIs |
+| Pending Receipts | Inventory Dashboard - Display these KPIs |
+| Pending Deliveries | Inventory Dashboard - Display these KPIs |
+| Internal Transfers Scheduled | Inventory Dashboard - Display these KPIs |
+| Dashboard Dynamic Filters | Dashboard Dynamic Filters |
+| Filter by Document Type | Dashboard Dynamic Filters - By Document Type |
+| Filter by Status | Dashboard Dynamic Filters - By Status |
+| Filter by Warehouse/Location | Dashboard Dynamic Filters - By Warehouse or Location |
+| Filter by Product Category | Dashboard Dynamic Filters - By Product Category |
+| Frontend Dashboard UI | Frontend Requirements - Dashboard with KPIs & filters |
+| **Product Management** | Core Modules - 1) Product Management |
+| Create/update products | Core Modules - 1) Product Management |
+| Product Name | Core Modules - 1) Product Management - Fields |
+| Product SKU / Code | Core Modules - 1) Product Management - Fields |
+| Product Category | Core Modules - 1) Product Management - Fields; Product categories |
+| Unit of Measure | Core Modules - 1) Product Management - Fields |
+| Initial stock (optional) | Core Modules - 1) Product Management - Fields |
+| Stock availability per location | Core Modules - 1) Product Management |
+| Reordering rules | Core Modules - 1) Product Management |
+| GET /products | APIs Required - Products |
+| POST /products | APIs Required - Products |
+| PUT /products/:id | APIs Required - Products |
+| Frontend Product CRUD pages | Frontend Requirements - Product CRUD pages |
+| **Receipts (Incoming Stock)** | Core Modules - 2) Receipts (Incoming Stock) |
+| Create new receipt | Core Modules - 2) Receipts (Incoming Stock) |
+| Add supplier & products | Core Modules - 2) Receipts (Incoming Stock) |
+| Input received quantities | Core Modules - 2) Receipts (Incoming Stock) |
+| Validate receipt | Core Modules - 2) Receipts (Incoming Stock) |
+| Stock increases | Core Modules - 2) Receipts (Incoming Stock) |
+| POST /receipts | APIs Required - Receipts |
+| PUT /receipts/:id/validate | APIs Required - Receipts |
+| Frontend Receipt UI | Frontend Requirements - Receipt creation + validation UI |
+| **Delivery Orders (Outgoing Stock)** | Core Modules - 3) Delivery Orders (Outgoing Stock) |
+| Pick items | Core Modules - 3) Delivery Orders (Outgoing Stock) |
+| Pack items | Core Modules - 3) Delivery Orders (Outgoing Stock) |
+| Validate delivery | Core Modules - 3) Delivery Orders (Outgoing Stock) |
+| Stock decreases | Core Modules - 3) Delivery Orders (Outgoing Stock) |
+| POST /deliveries | APIs Required - Delivery Orders |
+| PUT /deliveries/:id/validate | APIs Required - Delivery Orders |
+| Frontend Delivery UI | Frontend Requirements - Delivery creation + validation UI |
+| **Internal Transfers** | Core Modules - 4) Internal Transfers |
+| Move stock between locations | Core Modules - 4) Internal Transfers |
+| Stock total stays same | Core Modules - 4) Internal Transfers |
+| Logged in stock ledger | Core Modules - 4) Internal Transfers |
+| POST /transfers | APIs Required - Internal Transfers |
+| PUT /transfers/:id/complete | APIs Required - Internal Transfers |
+| Frontend Internal Transfer UI | Frontend Requirements - Internal transfer UI |
+| **Stock Adjustments** | Core Modules - 5) Stock Adjustments |
+| Fix stock mismatches | Core Modules - 5) Stock Adjustments |
+| Select product & location | Core Modules - 5) Stock Adjustments |
+| Enter counted quantity | Core Modules - 5) Stock Adjustments |
+| System updates stock | Core Modules - 5) Stock Adjustments |
+| Logs adjustment | Core Modules - 5) Stock Adjustments |
+| POST /adjustments | APIs Required - Stock Adjustments |
+| Frontend Adjustment UI | Frontend Requirements - Adjustment entry UI |
+| **Stock Ledger** | Stock Ledger |
+| Immutable log | Stock Ledger |
+| Audit trail | Stock Ledger |
+| GET /ledger | APIs Required - Ledger |
+| Frontend Stock Ledger Viewer | Frontend Requirements - Stock ledger viewer with filters |
+| **Additional Features** | Additional Features |
+| Low stock alerts | Additional Features |
+| Multi-warehouse support | Additional Features; Backend Requirements - Support multi-warehouse stock_levels |
+| SKU search + smart filters | Additional Features |
+| Full move history | Additional Features |
+| Navigation (Left Sidebar) | Navigation (Left Sidebar) |
+| Dashboard link | Navigation (Left Sidebar) |
+| Products link | Navigation (Left Sidebar) |
+| Receipts link | Navigation (Left Sidebar) |
+| Delivery Orders link | Navigation (Left Sidebar) |
+| Internal Transfers link | Navigation (Left Sidebar) |
+| Inventory Adjustments link | Navigation (Left Sidebar) |
+| Move History link | Navigation (Left Sidebar) |
+| Settings (Warehouse) link | Navigation (Left Sidebar) |
+| Profile + Logout link | Navigation (Left Sidebar) |
+| **Backend Requirements** | Backend Requirements |
+| Transactional updates | Backend Requirements - Transactional updates for all stock changes |
+| Ledger entry for every stock op | Backend Requirements - Ledger entry created for every stock operation |
+| Prevent negative stock | Backend Requirements - Prevent negative stock unless adjustment defines it |
+| JWT authentication | Non-functional Requirements |
+| Redis caching | Non-functional Requirements - Redis caching for OTP & rate-limits |
+| Postgres | Non-functional Requirements - Postgres for relational inventory data |
+| Atomic stock updates | Non-functional Requirements - Stock updates must be atomic |
+| Clear error messages | Non-functional Requirements |
+| Server-side dynamic filters | Non-functional Requirements - Filters must be dynamic and server-side |
+| **Frontend Requirements** | Frontend Requirements |
+| Dashboard loads fast | Non-functional Requirements |
+| Clean UI | Non-functional Requirements - Clean UI for warehouse operators |
 
-## Tech Stack
-
-### Frontend
-- React 18
-- Vite
-- Tailwind CSS
-- Axios
-- React Router DOM
-- Recharts (for analytics)
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB (Mongoose)
-- JWT Authentication
-- bcryptjs (password hashing)
-
-## Project Structure
-
-```
-.
-├── backend/
-│   ├── models/          # MongoDB models
-│   ├── routes/          # API routes
-│   ├── middleware/      # Auth middleware
-│   └── server.js        # Express server
-├── frontend/
-│   ├── src/
-│   │   ├── components/  # Reusable components
-│   │   ├── pages/       # Page components
-│   │   ├── context/     # React context
-│   │   └── App.jsx      # Main app component
-│   └── package.json
-└── README.md
-```
-
-## Setup Instructions
+## Quick Start
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or MongoDB Atlas)
-- npm or yarn
+- Docker Desktop installed and running (for Docker setup)
+- OR Python 3.9+ and Node.js 20.11.0+ (for local development)
+- PostgreSQL 13+ (for local development)
+- Redis (for local development)
 
-### Backend Setup
+### Running with Docker Compose
 
-1. Navigate to backend directory:
-```bash
-cd backend
-```
+1. **Start all services:**
+   ```bash
+   docker-compose up --build
+   ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+2. **Rebuild frontend only (after Dockerfile changes):**
+   ```bash
+   docker-compose down
+   docker-compose build --no-cache frontend
+   docker-compose up
+   ```
 
-3. Create `.env` file (copy from `.env.example`):
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/dayflow
-JWT_SECRET=your_jwt_secret_key_here
-JWT_EXPIRE=7d
-NODE_ENV=development
-```
+3. **Access the application:**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
 
-4. Start the server:
-```bash
-npm run dev
-```
+### Running Locally (Without Docker)
 
-The backend will run on `http://localhost:5000`
+#### Backend Setup
 
-### Frontend Setup
+1. **Create and activate virtual environment (recommended):**
+   ```bash
+   # Windows PowerShell
+   cd backend
+   python -m venv venv
+   .\venv\Scripts\Activate.ps1
+   
+   # Or Windows CMD
+   venv\Scripts\activate.bat
+   
+   # Linux/Mac
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
 
-1. Navigate to frontend directory:
-```bash
-cd frontend
-```
+2. **Install Python dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+3. **Set environment variables:**
+   
+   **Windows PowerShell:**
+   ```powershell
+   $env:DATABASE_URL="postgresql://user:password@localhost:5432/stockmaster"
+   $env:REDIS_URL="redis://localhost:6379/0"
+   $env:SECRET_KEY="your-secret-key-here"
+   ```
+   
+   **Windows CMD:**
+   ```cmd
+   set DATABASE_URL=postgresql://user:password@localhost:5432/stockmaster
+   set REDIS_URL=redis://localhost:6379/0
+   set SECRET_KEY=your-secret-key-here
+   ```
+   
+   **Linux/Mac:**
+   ```bash
+   export DATABASE_URL="postgresql://user:password@localhost:5432/stockmaster"
+   export REDIS_URL="redis://localhost:6379/0"
+   export SECRET_KEY="your-secret-key-here"
+   ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+4. **Run database migrations and seed data:**
+   ```bash
+   python seed_data.py
+   ```
+   
+   **Note:** If you get `ModuleNotFoundError`, make sure you've installed dependencies (step 2) and activated your virtual environment.
 
-The frontend will run on `http://localhost:3000`
+4. **Start the backend server:**
+   ```bash
+   uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
 
-## Usage
+#### Frontend Setup
 
-### Creating an Account
+1. **Install dependencies:**
+   ```bash
+   cd frontend
+   npm install
+   ```
 
-1. Navigate to the Sign Up page
-2. Fill in:
-   - Employee ID
-   - Email
-   - Password (min 6 characters)
-   - Role (Employee, HR Officer, or Admin)
-3. Click "Sign Up"
+2. **Set environment variable:**
+   ```bash
+   export NEXT_PUBLIC_BACKEND_URL="http://localhost:8000"
+   ```
 
-### Signing In
+3. **Start the frontend server:**
+   ```bash
+   npm run dev
+   ```
 
-1. Navigate to the Sign In page
-2. Enter your email and password
-3. Click "Sign In"
-4. You'll be redirected to your dashboard based on your role
+### Sample Login Credentials
 
-### Employee Features
+After running `seed_data.py`, you can use these test accounts:
 
-- **Dashboard**: View quick stats and check-in/check-out
-- **Profile**: View and edit personal information
-- **Attendance**: Track daily/weekly attendance
-- **Leave**: Apply for leave and view status
-- **Payroll**: View salary details
+**Admin Account:**
+- Email: `admin@stockmaster.com`
+- Password: `admin123`
 
-### Admin/HR Features
+**Manager Account:**
+- Email: `manager@stockmaster.com`
+- Password: `manager123`
 
-- **Dashboard**: View all employees and system overview
-- **Profile**: View and edit any employee profile
-- **Attendance**: View all employee attendance records
-- **Leave**: Approve or reject leave requests
-- **Payroll**: Generate and manage payroll for all employees
-- **Analytics**: View reports and insights
+**Staff Account:**
+- Email: `staff@stockmaster.com`
+- Password: `staff123`
 
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/signup` - Register new user
-- `POST /api/auth/signin` - Sign in user
-- `GET /api/auth/me` - Get current user
-
-### Profile
-- `GET /api/profile` - Get user profile
-- `PUT /api/profile` - Update user profile
-- `GET /api/profile/:id` - Get employee profile (Admin only)
-- `PUT /api/profile/:id` - Update employee profile (Admin only)
-
-### Attendance
-- `POST /api/attendance/checkin` - Check in
-- `POST /api/attendance/checkout` - Check out
-- `GET /api/attendance/my` - Get user attendance
-- `GET /api/attendance` - Get all attendance (Admin only)
-
-### Leave
-- `POST /api/leave` - Apply for leave
-- `GET /api/leave/my` - Get user leave requests
-- `GET /api/leave` - Get all leave requests (Admin only)
-- `PUT /api/leave/:id/approve` - Approve leave (Admin only)
-- `PUT /api/leave/:id/reject` - Reject leave (Admin only)
-
-### Payroll
-- `GET /api/payroll/my` - Get user payroll
-- `GET /api/payroll` - Get all payroll (Admin only)
-- `POST /api/payroll/generate` - Generate payroll (Admin only)
-
-### Analytics
-- `GET /api/analytics/dashboard` - Get dashboard stats
-- `GET /api/analytics/reports` - Get reports (Admin only)
-
-## Default Roles
-
-- **Employee**: Regular user with limited access
-- **HR Officer**: Can manage employees and approve requests
-- **Admin**: Full system access
-
-## Security Features
-
-- Password hashing with bcryptjs
-- JWT token-based authentication
-- Role-based access control
-- Protected API routes
-
-## Future Enhancements
-
-- Email notifications
-- Document upload and management
-- Advanced reporting
-- Mobile app support
-- Real-time notifications
-- Calendar integration
-
-## License
-
-This project is open source and available for educational purposes.
-
-## Support
-
-For issues or questions, please create an issue in the repository.
-
----
-
-**Built with ❤️ for efficient HR management**
-
+### First Steps
+1. Sign up at http://localhost:3000/signup (or use sample credentials above)
+2. Log in at http://localhost:3000/login
+3. Access Dashboard at http://localhost:3000/dashboard
