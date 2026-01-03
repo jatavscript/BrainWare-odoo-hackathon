@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+}
+
+.btn {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition dark:bg-blue-600 dark:hover:bg-blue-500;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 dark:bg-gray-950 dark:border-gray-800;
+}
+
+/* Basic theming for inputs/selects/textareas */
+:where(input, select, textarea) {
+  @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500;
+}
+
+/* Table borders and header background in dark */
+:where(table) th {
+  @apply bg-gray-50 dark:bg-gray-900;
+}
+
+:where(table) th, :where(table) td, :where(tr) {
+  @apply border-gray-200 dark:border-gray-800;
+}
